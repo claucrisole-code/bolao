@@ -268,13 +268,12 @@
 <div class="range-hint">Média histórica: ~25 faltas por jogo</div>
 </div>
 <div class="field-card">
-<div class="field-label"><div class="field-num">6</div><div class="field-title">Faixa de escanteios totais</div><div class="field-points">1 pt</div></div>
-<div class="radio-group">
-<div class="radio-option"><input type="radio" name="escanteios" id="e1" value="0-4"><label for="e1">0–4</label></div>
-<div class="radio-option"><input type="radio" name="escanteios" id="e2" value="5-8"><label for="e2">5–8</label></div>
-<div class="radio-option"><input type="radio" name="escanteios" id="e3" value="9-12"><label for="e3">9–12</label></div>
-<div class="radio-option"><input type="radio" name="escanteios" id="e4" value="13+"><label for="e4">13+</label></div>
+<div class="field-label"><div class="field-num">6</div><div class="field-title">Total de escanteios na partida</div><div class="field-points">1 pt</div></div>
+<div class="range-row">
+<input type="range" id="escanteios" class="range-input" min="0" max="25" value="10" oninput="document.getElementById('escanteios-val').textContent=this.value">
+<div class="range-val" id="escanteios-val">10</div>
 </div>
+<div class="range-hint">Média histórica: ~10 escanteios por jogo</div>
 </div>
 <button class="submit-btn" id="submit-btn" onclick="submitBet()">ENVIAR APOSTA ⚽</button>
 </div>
@@ -320,7 +319,7 @@
 <div class="result-field"><label>Primeiro Gol</label><input type="text" id="r-primeiro-gol" class="text-input" placeholder="Nome do jogador"></div>
 <div class="result-field"><label>Craque da Partida</label><input type="text" id="r-craque" class="text-input" placeholder="Nome do jogador"></div>
 <div class="result-field"><label>Total de Faltas</label><input type="number" id="r-faltas" class="text-input" min="0" max="80" placeholder="Ex: 28"></div>
-<div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" max="30" placeholder="Ex: 9"></div>
+<div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" max="30" placeholder="Ex: 10"></div>
 </div>
 <button class="calc-btn" id="calc-btn" onclick="calcularPontuacao()">⚡ CALCULAR PONTUAÇÃO</button>
 </div>
@@ -338,7 +337,7 @@
 <div class="toast" id="toast"></div>
 <script>
 
-  const ADMIN_PIN = "1234";
+  const ADMIN_PIN = "4221";
 
   const SHEET_URL = "https://script.google.com/macros/s/AKfycby4VCDBEKpwZyJQ49Dls6ElNdq7J971PZkqMiEp3hwPK5XiO1roDA1VazkolvCvLVYakg/exec";
 
@@ -420,10 +419,6 @@
 
     if (!vencedor) { showToast('Escolha o vencedor!', true); return; }
 
-    const escanteios = document.querySelector('input[name="escanteios"]:checked')?.value;
-
-    if (!escanteios) { showToast('Escolha a faixa de escanteios!', true); return; }
-
     const primeiroGol = document.getElementById('primeiro-gol').value.trim();
 
     if (!primeiroGol) { showToast('Preencha o primeiro gol!', true); return; }
@@ -435,8 +430,6 @@
     const btn = document.getElementById('submit-btn');
 
     btn.disabled = true; btn.textContent = 'Enviando…';
-
-    // Checar duplicata
 
     const bets = await getAllBets();
 
@@ -462,7 +455,7 @@
 
       faltas: parseInt(document.getElementById('faltas').value),
 
-      escanteios
+      escanteios: parseInt(document.getElementById('escanteios').value)
 
     };
 
@@ -488,6 +481,10 @@
 
       document.getElementById('faltas-val').textContent = '25';
 
+      document.getElementById('escanteios').value = 10;
+
+      document.getElementById('escanteios-val').textContent = '10';
+
     } catch(e) {
 
       showToast('Erro ao enviar. Tente novamente!', true);
@@ -499,22 +496,6 @@
   }
 
   function normalize(s) { return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
-
-  function scoreEscanteios(aposta, total) {
-
-    const n = parseInt(total);
-
-    if (aposta === '0-4' && n <= 4) return 1;
-
-    if (aposta === '5-8' && n >= 5 && n <= 8) return 1;
-
-    if (aposta === '9-12' && n >= 9 && n <= 12) return 1;
-
-    if (aposta === '13+' && n >= 13) return 1;
-
-    return 0;
-
-  }
 
   function calcPoints(bet, result) {
 
@@ -530,7 +511,7 @@
 
     if (parseInt(bet.faltas) === parseInt(result.faltas)) { pts += 2; breakdown.push('Faltas +2'); }
 
-    if (scoreEscanteios(bet.escanteios, result.escanteios)) { pts += 1; breakdown.push('Escanteios +1'); }
+    if (parseInt(bet.escanteios) === parseInt(result.escanteios)) { pts += 1; breakdown.push('Escanteios +1'); }
 
     return { pts, breakdown };
 
@@ -652,23 +633,27 @@
 
     countEl.textContent = `${bets.length} aposta${bets.length !== 1 ? 's' : ''} registrada${bets.length !== 1 ? 's' : ''}`;
 
-    const scored = bets.filter(b => b.pontos !== null);
+    if (bets.length === 0) {
 
-    if (scored.length === 0) {
-
-      list.innerHTML = `<div class="ranking-empty"><div class="icon">⏳</div><p>${bets.length > 0 ? 'Aguardando o admin inserir os resultados.' : 'Nenhuma aposta registrada ainda.'}</p></div>`;
+      list.innerHTML = '<div class="ranking-empty"><div class="icon">⏳</div><p>Nenhuma aposta registrada ainda.</p></div>';
 
       return;
 
     }
 
-    const sorted = [...scored].sort((a, b) => b.pontos - a.pontos);
+    const scored = bets.filter(b => b.pontos !== null);
+
+    const sorted = [...bets].sort((a, b) => (b.pontos || 0) - (a.pontos || 0));
 
     list.innerHTML = sorted.map((b, i) => {
 
-      const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const cls = i === 0 && scored.length > 0 ? 'gold' : i === 1 && scored.length > 0 ? 'silver' : i === 2 && scored.length > 0 ? 'bronze' : '';
 
-      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span style="font-family:'Bebas Neue';font-size:20px;color:var(--muted)">${i+1}</span>`;
+      const medal = scored.length > 0 ? (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span style="font-family:'Bebas Neue';font-size:20px;color:var(--muted)">${i+1}</span>`) : `<span style="font-family:'Bebas Neue';font-size:20px;color:var(--muted)">${i+1}</span>`;
+
+      const pontos = b.pontos !== null ? b.pontos : 0;
+
+      const ptsLabel = b.pontos !== null ? 'pontos' : 'aguardando';
 
       return `<div class="podium-row ${cls}">
 <div style="width:30px;text-align:center;font-size:20px">${medal}</div>
@@ -677,7 +662,7 @@
 
           ${b.breakdown ? `<div class="rank-breakdown">${b.breakdown.join(' · ')}</div>` : ''}
 </div>
-<div style="text-align:right"><div class="rank-score">${b.pontos}</div><div class="rank-pts">pontos</div></div>
+<div style="text-align:right"><div class="rank-score">${pontos}</div><div class="rank-pts">${ptsLabel}</div></div>
 </div>`;
 
     }).join('');
