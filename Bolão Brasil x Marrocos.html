@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Brasil x Marrocos</title>
+<style>
+ @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+ :root {
+   --verde: #009C3B; --amarelo: #FFDF00; --marrocos-red: #C1272D;
+   --dourado: #D4AF37; --bg: #0a0f0d; --card: #111a14; --card2: #16201a;
+   --border: rgba(255,223,0,0.15); --text: #f0ede4; --muted: #7a8c7e;
+ }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+ header { background: linear-gradient(180deg,#000 0%,var(--bg) 100%); border-bottom: 2px solid var(--amarelo); position: relative; overflow: hidden; }
+ .header-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -20%,rgba(255,223,0,0.12) 0%,transparent 70%); pointer-events: none; }
+ .scoreboard { display: flex; align-items: center; justify-content: center; padding: 36px 20px 28px; position: relative; }
+ .team-block { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; }
+ .team-flag { font-size: 56px; line-height: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
+ .team-name { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 3px; color: #fff; }
+ .vs-block { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 32px; }
+ .vs-text { font-family: 'Bebas Neue',sans-serif; font-size: 18px; color: var(--muted); letter-spacing: 4px; }
+ .vs-divider { width: 2px; height: 60px; background: linear-gradient(to bottom,transparent,var(--amarelo),transparent); }
+ .match-info { text-align: center; padding: 0 20px 28px; }
+ .match-tag { display: inline-block; background: var(--amarelo); color: #000; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 2px; margin-bottom: 8px; }
+ .match-subtitle { color: var(--muted); font-size: 13px; }
+ .tabs { display: flex; justify-content: center; background: #000; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+ .tab-btn { background: none; border: none; color: var(--muted); font-family: 'Inter',sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 14px 28px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; text-transform: uppercase; }
+ .tab-btn:hover { color: var(--text); }
+ .tab-btn.active { color: var(--amarelo); border-bottom-color: var(--amarelo); }
+ .section { display: none; } .section.active { display: block; }
+ .container { max-width: 680px; margin: 0 auto; padding: 32px 16px; }
+ .form-header { text-align: center; margin-bottom: 32px; }
+ .form-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
+ .form-header p { color: var(--muted); font-size: 14px; }
+ .field-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; transition: border-color 0.2s; }
+ .field-card:focus-within { border-color: rgba(255,223,0,0.4); }
+ .field-label { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+ .field-num { background: var(--amarelo); color: #000; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+ .field-title { font-size: 14px; font-weight: 600; color: var(--text); }
+ .field-points { margin-left: auto; font-size: 11px; color: var(--dourado); font-weight: 600; background: rgba(212,175,55,0.1); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+ .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+ .radio-option { position: relative; }
+ .radio-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+ .radio-option label { display: block; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.15s; color: var(--muted); }
+ .radio-option input:checked + label { border-color: var(--amarelo); background: rgba(255,223,0,0.08); color: var(--amarelo); }
+ .radio-option label:hover { border-color: rgba(255,223,0,0.3); color: var(--text); }
+ .score-row { display: flex; align-items: center; gap: 12px; }
+ .score-team { font-size: 13px; color: var(--muted); font-weight: 600; width: 70px; }
+ .score-input { width: 60px; text-align: center; background: var(--card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: var(--text); font-size: 22px; font-family: 'Bebas Neue',sans-serif; padding: 8px; outline: none; transition: border-color 0.15s; }
+ .score-input:focus { border-color: var(--amarelo); }
+ .score-x { font-size: 18px; color: var(--muted); font-family: 'Bebas Neue',sans-serif; }
+ .text-input, .select-input { width: 100%; background: var(--card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: var(--text); font-size: 14px; padding: 11px 14px; outline: none; transition: border-color 0.15s; font-family: 'Inter',sans-serif; }
+ .text-input:focus, .select-input:focus { border-color: var(--amarelo); }
+ .select-input option { background: #1a2420; }
+ .name-field { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; }
+ .name-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
+ .submit-btn { width: 100%; background: var(--amarelo); color: #000; border: none; border-radius: 8px; font-family: 'Bebas Neue',sans-serif; font-size: 20px; letter-spacing: 2px; padding: 16px; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+ .submit-btn:hover { background: #ffe633; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,223,0,0.25); }
+ .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+ .ranking-header { text-align: center; margin-bottom: 28px; }
+ .ranking-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
+ .ranking-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+ .ranking-empty .icon { font-size: 48px; margin-bottom: 12px; }
+ .podium-row { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; }
+ .podium-row.gold { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.06); }
+ .podium-row.silver { border-color: rgba(180,180,180,0.4); }
+ .podium-row.bronze { border-color: rgba(180,100,40,0.4); }
+ .rank-name { flex: 1; font-weight: 600; font-size: 15px; }
+ .rank-score { font-family: 'Bebas Neue',sans-serif; font-size: 26px; color: var(--amarelo); }
+ .rank-pts { font-size: 11px; color: var(--muted); font-weight: 600; }
+ .rank-breakdown { font-size: 12px; color: var(--muted); margin-top: 2px; }
+ .admin-lock { text-align: center; padding: 60px 20px; }
+ .admin-lock h3 { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 16px; }
+ .admin-lock p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+ .pin-input { width: 160px; text-align: center; background: var(--card); border: 2px solid var(--border); border-radius: 8px; color: var(--text); font-size: 28px; font-family: 'Bebas Neue',sans-serif; letter-spacing: 4px; padding: 12px; outline: none; margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto; }
+ .pin-input:focus { border-color: var(--amarelo); }
+ .unlock-btn { background: transparent; border: 1px solid var(--amarelo); color: var(--amarelo); border-radius: 6px; padding: 10px 28px; font-family: 'Bebas Neue',sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+ .unlock-btn:hover { background: var(--amarelo); color: #000; }
+ .admin-panel { display: none; }
+ .admin-section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 20px; }
+ .admin-section h3 { font-family: 'Bebas Neue',sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--amarelo); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+ .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+ .result-field { display: flex; flex-direction: column; gap: 6px; }
+ .result-field label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+ .calc-btn { width: 100%; background: var(--verde); color: #fff; border: none; border-radius: 8px; font-family: 'Bebas Neue',sans-serif; font-size: 18px; letter-spacing: 2px; padding: 14px; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
+ .calc-btn:hover { background: #00b345; transform: translateY(-1px); }
+ .calc-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+ .entry-card { background: var(--card2); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 14px 16px; margin-bottom: 8px; font-size: 13px; }
+ .entry-card.pago { border-color: rgba(0,156,59,0.5); background: rgba(0,156,59,0.05); }
+ .entry-card strong { color: var(--amarelo); display: block; margin-bottom: 4px; font-size: 14px; }
+ .entry-detail { color: var(--muted); line-height: 1.8; }
+ .entry-actions { display: flex; gap: 8px; margin-top: 10px; }
+ .btn-validar { background: var(--verde); color: #fff; border: none; border-radius: 6px; padding: 7px 16px; font-family: 'Bebas Neue',sans-serif; font-size: 14px; letter-spacing: 1px; cursor: pointer; transition: all 0.15s; }
+ .btn-validar:hover { background: #00b345; }
+ .btn-invalidar { background: transparent; color: var(--marrocos-red); border: 1px solid var(--marrocos-red); border-radius: 6px; padding: 7px 16px; font-family: 'Bebas Neue',sans-serif; font-size: 14px; letter-spacing: 1px; cursor: pointer; transition: all 0.15s; }
+ .btn-invalidar:hover { background: var(--marrocos-red); color: #fff; }
+ .status-pago { display: inline-block; background: rgba(0,156,59,0.2); color: #00d44f; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+ .status-pendente { display: inline-block; background: rgba(255,223,0,0.1); color: var(--amarelo); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+ .range-row { display: flex; align-items: center; gap: 14px; }
+ .range-input { flex: 1; accent-color: var(--amarelo); height: 6px; cursor: pointer; }
+ .range-val { font-family: 'Bebas Neue',sans-serif; font-size: 22px; color: var(--amarelo); min-width: 36px; text-align: center; }
+ .range-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+ .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--verde); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; z-index: 999; transition: transform 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+ .toast.show { transform: translateX(-50%) translateY(0); }
+ .toast.error { background: var(--marrocos-red); }
+ .loading { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+ .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--amarelo); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+ @keyframes spin { to { transform: rotate(360deg); } }
+ @media (max-width: 500px) {
+   .team-name { font-size: 22px; } .team-flag { font-size: 44px; }
+   .vs-block { padding: 0 18px; } .tab-btn { padding: 12px 12px; font-size: 11px; }
+   .result-grid { grid-template-columns: 1fr; } .score-team { font-size: 12px; width: 60px; }
+ }
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-glow"></div>
+<div class="scoreboard">
+<div class="team-block"><div class="team-flag">🇧🇷</div><div class="team-name">Brasil</div></div>
+<div class="vs-block"><div class="vs-text">VS</div><div class="vs-divider"></div></div>
+<div class="team-block"><div class="team-flag">🇲🇦</div><div class="team-name">Marrocos</div></div>
+</div>
+<div class="match-info">
+<div class="match-tag">🏆 BOLÃO DA FAMÍLIA</div>
+<div class="match-subtitle">🏅 Família Melo — a melhor família que existe! 🏅</div>
+</div>
+</header>
+
+<div class="tabs">
+<button class="tab-btn active" onclick="showTab('apostar',this)">⚽ Apostar</button>
+<button class="tab-btn" onclick="showTab('ranking',this)">🏆 Ranking</button>
+<button class="tab-btn" onclick="showTab('admin',this)">⚙️ Admin</button>
+</div>
+
+<!-- APOSTAR -->
+<div id="tab-apostar" class="section active">
+<div class="container">
+<div class="form-header"><h2>Faça sua aposta</h2><p>Responda as 6 perguntas e torça muito!</p></div>
+<div class="name-field">
+<label class="name-label">Seu nome completo</label>
+<input type="text" id="playerName" class="text-input" placeholder="Ex: João Silva">
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">1</div><div class="field-title">Quem vence a partida?</div><div class="field-points">3 pts</div></div>
+<div class="radio-group">
+<div class="radio-option"><input type="radio" name="vencedor" id="v-brasil" value="Brasil"><label for="v-brasil">🇧🇷 Brasil</label></div>
+<div class="radio-option"><input type="radio" name="vencedor" id="v-empate" value="Empate"><label for="v-empate">🤝 Empate</label></div>
+<div class="radio-option"><input type="radio" name="vencedor" id="v-marrocos" value="Marrocos"><label for="v-marrocos">🇲🇦 Marrocos</label></div>
+</div>
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">2</div><div class="field-title">Qual o placar exato?</div><div class="field-points">5 pts</div></div>
+<div class="score-row">
+<div class="score-team">🇧🇷 Brasil</div>
+<input type="number" id="gols-brasil" class="score-input" min="0" max="20" value="0">
+<div class="score-x">X</div>
+<input type="number" id="gols-marrocos" class="score-input" min="0" max="20" value="0">
+<div class="score-team">🇲🇦 Marrocos</div>
+</div>
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">3</div><div class="field-title">Quem marca o primeiro gol?</div><div class="field-points">3 pts</div></div>
+<input type="text" id="primeiro-gol" class="text-input" placeholder="Nome do jogador ou 'Nenhum (0x0)'">
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">4</div><div class="field-title">Craque da partida</div><div class="field-points">2 pts</div></div>
+<input type="text" id="craque" class="text-input" placeholder="Nome do jogador eleito craque">
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">5</div><div class="field-title">Total de faltas na partida</div><div class="field-points">2 pts</div></div>
+<div class="range-row">
+<input type="range" id="faltas" class="range-input" min="10" max="50" value="25" oninput="document.getElementById('faltas-val').textContent=this.value">
+<div class="range-val" id="faltas-val">25</div>
+</div>
+<div class="range-hint">Média histórica: ~25 faltas por jogo</div>
+</div>
+<div class="field-card">
+<div class="field-label"><div class="field-num">6</div><div class="field-title">Total de escanteios na partida</div><div class="field-points">1 pt</div></div>
+<div class="range-row">
+<input type="range" id="escanteios" class="range-input" min="0" max="25" value="10" oninput="document.getElementById('escanteios-val').textContent=this.value">
+<div class="range-val" id="escanteios-val">10</div>
+</div>
+<div class="range-hint">Média histórica: ~10 escanteios por jogo</div>
+</div>
+<button class="submit-btn" id="submit-btn" onclick="submitBet()">ENVIAR APOSTA ⚽</button>
+</div>
+</div>
+
+<!-- RANKING -->
+<div id="tab-ranking" class="section">
+<div class="container">
+<div class="ranking-header"><h2>🏆 Ranking</h2><p id="ranking-subtitle" style="color:var(--muted);font-size:14px;">Apuração após o jogo</p></div>
+<div id="ranking-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
+<div id="bets-count" style="text-align:center;margin-top:24px;color:var(--muted);font-size:13px;"></div>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="tab-admin" class="section">
+<div class="container">
+<div id="admin-lock-screen" class="admin-lock">
+<div style="font-size:48px;margin-bottom:16px;">🔒</div>
+<h3>Área do Admin</h3>
+<p>Digite o PIN para inserir os resultados e calcular a pontuação.</p>
+<input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="····">
+<br>
+<button class="unlock-btn" onclick="checkPin()">ENTRAR</button>
+</div>
+<div id="admin-panel" class="admin-panel">
+<div class="admin-section">
+<h3>📋 Resultados do Jogo</h3>
+<div class="result-grid">
+<div class="result-field"><label>Vencedor</label>
+<select id="r-vencedor" class="select-input">
+<option value="">— selecione —</option>
+<option value="Brasil">🇧🇷 Brasil</option>
+<option value="Empate">🤝 Empate</option>
+<option value="Marrocos">🇲🇦 Marrocos</option>
+</select>
+</div>
+<div class="result-field"><label>Placar (Brasil x Marrocos)</label>
+<div class="score-row" style="gap:8px">
+<input type="number" id="r-gols-brasil" class="score-input" min="0" max="20" value="0" style="width:52px">
+<span class="score-x">x</span>
+<input type="number" id="r-gols-marrocos" class="score-input" min="0" max="20" value="0" style="width:52px">
+</div>
+</div>
+<div class="result-field"><label>Primeiro Gol</label><input type="text" id="r-primeiro-gol" class="text-input" placeholder="Nome do jogador"></div>
+<div class="result-field"><label>Craque da Partida</label><input type="text" id="r-craque" class="text-input" placeholder="Nome do jogador"></div>
+<div class="result-field"><label>Total de Faltas</label><input type="number" id="r-faltas" class="text-input" min="0" max="80" placeholder="Ex: 28"></div>
+<div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" max="30" placeholder="Ex: 10"></div>
+</div>
+<button class="calc-btn" id="calc-btn" onclick="calcularPontuacao()">⚡ CALCULAR PONTUAÇÃO</button>
+</div>
+<div class="admin-section">
+<h3>📝 Apostas Recebidas (<span id="bets-total">…</span>)</h3>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px;">✅ Valide quem pagou — só os validados aparecem no ranking.</p>
+<div id="entries-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
+</div>
+<div class="admin-section" style="border-color:rgba(193,39,45,0.3)">
+<h3 style="color:var(--marrocos-red)">⚠️ Zona de Perigo</h3>
+<button onclick="clearAll()" style="background:transparent;border:1px solid var(--marrocos-red);color:var(--marrocos-red);border-radius:6px;padding:10px 20px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;cursor:pointer;">LIMPAR TODAS AS APOSTAS</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+ const ADMIN_PIN = "4221";
+ const SHEET_URL = "https://script.google.com/macros/s/AKfycby4VCDBEKpwZyJQ49Dls6ElNdq7J971PZkqMiEp3hwPK5XiO1roDA1VazkolvCvLVYakg/exec";
+
+ async function getAllBets() {
+   try {
+     const res = await fetch(SHEET_URL);
+     const data = await res.json();
+     const rows = data.rows || [];
+     if (rows.length <= 1) return [];
+     return rows.slice(1).map(r => ({
+       name: r[0], vencedor: r[1],
+       gols_brasil: parseInt(r[2]) || 0,
+       gols_marrocos: parseInt(r[3]) || 0,
+       primeiro_gol: r[4], craque: r[5],
+       faltas: r[6], escanteios: r[7],
+       timestamp: r[8],
+       pontos: (r[9] !== undefined && r[9] !== '') ? parseInt(r[9]) : null,
+       breakdown: r[10] ? String(r[10]).split('|') : null,
+       pago: r[12] === 'SIM'
+     }));
+   } catch(e) { return []; }
+ }
+
+ async function togglePago(name, pagar) {
+   showToast(pagar ? "💾 Salvando..." : "💾 Removendo...");
+   try {
+     await fetch(SHEET_URL, {
+       method: 'POST',
+       mode: 'no-cors',
+       body: JSON.stringify({ action: 'pago', name: name, pago: pagar ? 'SIM' : 'NAO' })
+     });
+   } catch(e) {}
+   await new Promise(r => setTimeout(r, 2000));
+   showToast(pagar ? '✅ Marcado como pago!' : '❌ Pagamento removido!');
+   renderAdmin();
+   renderRanking();
+ }
+
+ function showTab(name, btn) {
+   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+   document.getElementById('tab-' + name).classList.add('active');
+   btn.classList.add('active');
+   if (name === 'ranking') renderRanking();
+   if (name === 'admin' && document.getElementById('admin-panel').style.display === 'block') renderAdmin();
+ }
+
+ function showToast(msg, isError) {
+   const t = document.getElementById('toast');
+   t.textContent = msg;
+   t.className = 'toast' + (isError ? ' error' : '');
+   void t.offsetWidth;
+   t.classList.add('show');
+   setTimeout(() => t.classList.remove('show'), 3400);
+ }
+
+ async function submitBet() {
+   const name = document.getElementById('playerName').value.trim();
+   if (!name) { showToast('Digite seu nome!', true); return; }
+   const vencedor = document.querySelector('input[name="vencedor"]:checked')?.value;
+   if (!vencedor) { showToast('Escolha o vencedor!', true); return; }
+   const primeiroGol = document.getElementById('primeiro-gol').value.trim();
+   if (!primeiroGol) { showToast('Preencha o primeiro gol!', true); return; }
+   const craque = document.getElementById('craque').value.trim();
+   if (!craque) { showToast('Preencha o craque!', true); return; }
+
+   const btn = document.getElementById('submit-btn');
+   btn.disabled = true; btn.textContent = 'Enviando…';
+
+   const bets = await getAllBets();
+   if (bets.find(b => b.name.toLowerCase().trim() === name.toLowerCase().trim())) {
+     showToast('Esse nome já apostou!', true);
+     btn.disabled = false; btn.textContent = 'ENVIAR APOSTA ⚽';
+     return;
+   }
+
+   const bet = {
+     action: 'bet', name, vencedor,
+     gols_brasil: parseInt(document.getElementById('gols-brasil').value) || 0,
+     gols_marrocos: parseInt(document.getElementById('gols-marrocos').value) || 0,
+     primeiro_gol: primeiroGol, craque,
+     faltas: parseInt(document.getElementById('faltas').value),
+     escanteios: parseInt(document.getElementById('escanteios').value)
+   };
+
+   try {
+     await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(bet) });
+     showToast('✅ Aposta enviada, ' + name + '! Boa sorte!');
+     document.getElementById('playerName').value = '';
+     document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+     document.getElementById('gols-brasil').value = 0;
+     document.getElementById('gols-marrocos').value = 0;
+     document.getElementById('primeiro-gol').value = '';
+     document.getElementById('craque').value = '';
+     document.getElementById('faltas').value = 25;
+     document.getElementById('faltas-val').textContent = '25';
+     document.getElementById('escanteios').value = 10;
+     document.getElementById('escanteios-val').textContent = '10';
+   } catch(e) {
+     showToast('Erro ao enviar. Tente novamente!', true);
+   }
+   btn.disabled = false; btn.textContent = 'ENVIAR APOSTA ⚽';
+ }
+
+ function normalize(s) { return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+
+ function calcPoints(bet, result) {
+   let pts = 0; const breakdown = [];
+   if (bet.vencedor === result.vencedor) { pts += 3; breakdown.push('Vencedor +3'); }
+   if (bet.gols_brasil === result.gols_brasil && bet.gols_marrocos === result.gols_marrocos) { pts += 5; breakdown.push('Placar exato +5'); }
+   if (normalize(bet.primeiro_gol) === normalize(result.primeiro_gol)) { pts += 3; breakdown.push('1º gol +3'); }
+   if (normalize(bet.craque) === normalize(result.craque)) { pts += 2; breakdown.push('Craque +2'); }
+   if (parseInt(bet.faltas) === parseInt(result.faltas)) { pts += 2; breakdown.push('Faltas +2'); }
+   if (parseInt(bet.escanteios) === parseInt(result.escanteios)) { pts += 1; breakdown.push('Escanteios +1'); }
+   return { pts, breakdown };
+ }
+
+ function checkPin() {
+   if (document.getElementById('pin-input').value === ADMIN_PIN) {
+     document.getElementById('admin-lock-screen').style.display = 'none';
+     document.getElementById('admin-panel').style.display = 'block';
+     renderAdmin();
+   } else {
+     showToast('PIN incorreto!', true);
+     document.getElementById('pin-input').value = '';
+   }
+ }
+
+ document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+
+ async function calcularPontuacao() {
+   const result = {
+     vencedor: document.getElementById('r-vencedor').value,
+     gols_brasil: parseInt(document.getElementById('r-gols-brasil').value) || 0,
+     gols_marrocos: parseInt(document.getElementById('r-gols-marrocos').value) || 0,
+     primeiro_gol: document.getElementById('r-primeiro-gol').value.trim(),
+     craque: document.getElementById('r-craque').value.trim(),
+     faltas: document.getElementById('r-faltas').value,
+     escanteios: document.getElementById('r-escanteios').value,
+   };
+   if (!result.vencedor) { showToast('Selecione o vencedor!', true); return; }
+   if (!result.faltas || !result.escanteios) { showToast('Preencha faltas e escanteios!', true); return; }
+
+   const btn = document.getElementById('calc-btn');
+   btn.disabled = true; btn.textContent = 'Calculando…';
+
+   const bets = await getAllBets();
+   for (const bet of bets) {
+     const { pts, breakdown } = calcPoints(bet, result);
+     await fetch(SHEET_URL, {
+       method: 'POST',
+       mode: 'no-cors',
+       body: JSON.stringify({ action: 'score', name: bet.name, pontos: pts, breakdown: breakdown.join('|'), result: JSON.stringify(result) })
+     });
+   }
+
+   showToast('✅ Pontuação calculada! Veja o ranking.');
+   btn.disabled = false; btn.textContent = '⚡ CALCULAR PONTUAÇÃO';
+   renderAdmin();
+   renderRanking();
+ }
+
+ async function renderAdmin() {
+   const bets = await getAllBets();
+   document.getElementById('bets-total').textContent = bets.length;
+   const list = document.getElementById('entries-list');
+   if (bets.length === 0) { list.innerHTML = '<p style="color:var(--muted);font-size:14px;">Nenhuma aposta ainda.</p>'; return; }
+   list.innerHTML = bets.map(b => `
+<div class="entry-card ${b.pago ? 'pago' : ''}">
+<strong>${b.name} &nbsp; ${b.pago ? '<span class="status-pago">✅ PAGO</span>' : '<span class="status-pendente">⏳ PENDENTE</span>'}</strong>
+<div class="entry-detail">
+         Vencedor: <b>${b.vencedor}</b> · Placar: <b>Brasil ${b.gols_brasil}x${b.gols_marrocos} Marrocos</b><br>
+         1º Gol: <b>${b.primeiro_gol}</b> · Craque: <b>${b.craque}</b><br>
+         Faltas: <b>${b.faltas}</b> · Escanteios: <b>${b.escanteios}</b><br>
+<span style="color:var(--muted);font-size:12px">🕐 ${b.timestamp}</span>
+         ${b.pontos !== null ? `<br><span style="color:var(--amarelo);font-weight:700">Pontos: ${b.pontos}</span>` : ''}
+</div>
+<div class="entry-actions">
+         ${!b.pago
+           ? `<button class="btn-validar" onclick="togglePago('${b.name}', true)">✅ Marcar como Pago</button>`
+           : `<button class="btn-invalidar" onclick="togglePago('${b.name}', false)">❌ Remover Pagamento</button>`
+         }
+</div>
+</div>`).join('');
+ }
+
+ async function renderRanking() {
+   const list = document.getElementById('ranking-list');
+   const countEl = document.getElementById('bets-count');
+   list.innerHTML = '<div class="loading"><span class="spinner"></span>Carregando...</div>';
+   const bets = await getAllBets();
+
+   // Apenas pagos no ranking
+   const pagos = bets.filter(b => b.pago);
+   countEl.textContent = `${pagos.length} participante${pagos.length !== 1 ? 's' : ''} validado${pagos.length !== 1 ? 's' : ''}`;
+
+   if (pagos.length === 0) {
+     list.innerHTML = '<div class="ranking-empty"><div class="icon">⏳</div><p>Nenhuma aposta validada ainda.</p></div>';
+     return;
+   }
+
+   const scored = pagos.filter(b => b.pontos !== null);
+   const sorted = [...pagos].sort((a, b) => (b.pontos || 0) - (a.pontos || 0));
+
+   list.innerHTML = sorted.map((b, i) => {
+     const cls = i === 0 && scored.length > 0 ? 'gold' : i === 1 && scored.length > 0 ? 'silver' : i === 2 && scored.length > 0 ? 'bronze' : '';
+     const medal = scored.length > 0
+       ? (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span style="font-family:'Bebas Neue';font-size:20px;color:var(--muted)">${i+1}</span>`)
+       : `<span style="font-family:'Bebas Neue';font-size:20px;color:var(--muted)">${i+1}</span>`;
+     const pontos = b.pontos !== null ? b.pontos : 0;
+     return `<div class="podium-row ${cls}">
+<div style="width:30px;text-align:center;font-size:20px">${medal}</div>
+<div style="flex:1">
+<div class="rank-name">${b.name}</div>
+         ${b.breakdown ? `<div class="rank-breakdown">${b.breakdown.join(' · ')}</div>` : ''}
+</div>
+<div style="text-align:right"><div class="rank-score">${pontos}</div><div class="rank-pts">pontos</div></div>
+</div>`;
+   }).join('');
+ }
+
+ async function clearAll() {
+   if (!confirm('Tem certeza? Apaga TODAS as apostas e resultados.')) return;
+   await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'clear' }) });
+   showToast('Dados apagados.');
+   renderAdmin();
+   renderRanking();
+ }
+
+ renderRanking();
+</script>
+</body>
+</html>
