@@ -3,401 +3,570 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolao Brasil x Marrocos</title>
+<title>Bolao Familia Melo - Brasil x Haiti</title>
 <style>
- @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
- :root {
-   --verde: #009C3B; --amarelo: #FFDF00; --marrocos-red: #C1272D;
-   --dourado: #D4AF37; --bg: #0a0f0d; --card: #111a14; --card2: #16201a;
-   --border: rgba(255,223,0,0.15); --text: #f0ede4; --muted: #7a8c7e;
- }
- * { box-sizing: border-box; margin: 0; padding: 0; }
- body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
- header { background: linear-gradient(180deg,#000 0%,var(--bg) 100%); border-bottom: 2px solid var(--amarelo); position: relative; overflow: hidden; }
- .header-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -20%,rgba(255,223,0,0.12) 0%,transparent 70%); pointer-events: none; }
- .scoreboard { display: flex; align-items: center; justify-content: center; padding: 36px 20px 28px; position: relative; }
- .team-block { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; }
- .team-flag { font-size: 56px; line-height: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
- .team-name { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 3px; color: #fff; }
- .vs-block { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 32px; }
- .vs-text { font-family: 'Bebas Neue',sans-serif; font-size: 18px; color: var(--muted); letter-spacing: 4px; }
- .vs-divider { width: 2px; height: 60px; background: linear-gradient(to bottom,transparent,var(--amarelo),transparent); }
- .match-info { text-align: center; padding: 0 20px 28px; }
- .match-tag { display: inline-block; background: var(--amarelo); color: #000; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 2px; margin-bottom: 8px; }
- .match-subtitle { color: var(--muted); font-size: 13px; }
- .tabs { display: flex; justify-content: center; background: #000; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
- .tab-btn { background: none; border: none; color: var(--muted); font-family: 'Inter',sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 14px 28px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; text-transform: uppercase; }
- .tab-btn:hover { color: var(--text); }
- .tab-btn.active { color: var(--amarelo); border-bottom-color: var(--amarelo); }
- .section { display: none; } .section.active { display: block; }
- .container { max-width: 680px; margin: 0 auto; padding: 32px 16px; }
- .form-header { text-align: center; margin-bottom: 32px; }
- .form-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
- .form-header p { color: var(--muted); font-size: 14px; }
- .field-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; transition: border-color 0.2s; }
- .field-card:focus-within { border-color: rgba(255,223,0,0.4); }
- .field-label { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
- .field-num { background: var(--amarelo); color: #000; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
- .field-title { font-size: 14px; font-weight: 600; color: var(--text); }
- .field-points { margin-left: auto; font-size: 11px; color: var(--dourado); font-weight: 600; background: rgba(212,175,55,0.1); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
- .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
- .radio-option { position: relative; }
- .radio-option input { position: absolute; opacity: 0; width: 0; height: 0; }
- .radio-option label { display: block; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.15s; color: var(--muted); }
- .radio-option input:checked + label { border-color: var(--amarelo); background: rgba(255,223,0,0.08); color: var(--amarelo); }
- .radio-option label:hover { border-color: rgba(255,223,0,0.3); color: var(--text); }
- .score-row { display: flex; align-items: center; gap: 12px; }
- .score-team { font-size: 13px; color: var(--muted); font-weight: 600; width: 70px; }
- .score-input { width: 60px; text-align: center; background: var(--card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: var(--text); font-size: 22px; font-family: 'Bebas Neue',sans-serif; padding: 8px; outline: none; transition: border-color 0.15s; }
- .score-input:focus { border-color: var(--amarelo); }
- .score-x { font-size: 18px; color: var(--muted); font-family: 'Bebas Neue',sans-serif; }
- .text-input, .select-input { width: 100%; background: var(--card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: var(--text); font-size: 14px; padding: 11px 14px; outline: none; transition: border-color 0.15s; font-family: 'Inter',sans-serif; }
- .text-input:focus, .select-input:focus { border-color: var(--amarelo); }
- .select-input option { background: #1a2420; }
- .name-field { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; }
- .name-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
- .submit-btn { width: 100%; background: var(--amarelo); color: #000; border: none; border-radius: 8px; font-family: 'Bebas Neue',sans-serif; font-size: 20px; letter-spacing: 2px; padding: 16px; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
- .submit-btn:hover { background: #ffe633; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,223,0,0.25); }
- .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
- .ranking-header { text-align: center; margin-bottom: 28px; }
- .ranking-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
- .ranking-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
- .ranking-empty .icon { font-size: 48px; margin-bottom: 12px; }
- .podium-row { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; }
- .podium-row.gold { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.06); }
- .podium-row.silver { border-color: rgba(180,180,180,0.4); }
- .podium-row.bronze { border-color: rgba(180,100,40,0.4); }
- .rank-name { flex: 1; font-weight: 600; font-size: 15px; }
- .rank-score { font-family: 'Bebas Neue',sans-serif; font-size: 26px; color: var(--amarelo); }
- .rank-pts { font-size: 11px; color: var(--muted); font-weight: 600; }
- .rank-breakdown { font-size: 12px; color: var(--muted); margin-top: 2px; }
- .admin-lock { text-align: center; padding: 60px 20px; }
- .admin-lock h3 { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 16px; }
- .admin-lock p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
- .pin-input { width: 160px; text-align: center; background: var(--card); border: 2px solid var(--border); border-radius: 8px; color: var(--text); font-size: 28px; font-family: 'Bebas Neue',sans-serif; letter-spacing: 4px; padding: 12px; outline: none; margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto; }
- .pin-input:focus { border-color: var(--amarelo); }
- .unlock-btn { background: transparent; border: 1px solid var(--amarelo); color: var(--amarelo); border-radius: 6px; padding: 10px 28px; font-family: 'Bebas Neue',sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
- .unlock-btn:hover { background: var(--amarelo); color: #000; }
- .admin-panel { display: none; }
- .admin-section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 20px; }
- .admin-section h3 { font-family: 'Bebas Neue',sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--amarelo); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
- .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
- .result-field { display: flex; flex-direction: column; gap: 6px; }
- .result-field label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
- .calc-btn { width: 100%; background: var(--verde); color: #fff; border: none; border-radius: 8px; font-family: 'Bebas Neue',sans-serif; font-size: 18px; letter-spacing: 2px; padding: 14px; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
- .calc-btn:hover { background: #00b345; transform: translateY(-1px); }
- .calc-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
- .entry-card { background: var(--card2); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 14px 16px; margin-bottom: 8px; font-size: 13px; }
- .entry-card strong { color: var(--amarelo); display: block; margin-bottom: 4px; font-size: 14px; }
- .entry-detail { color: var(--muted); line-height: 1.8; }
- .range-row { display: flex; align-items: center; gap: 14px; }
- .range-input { flex: 1; accent-color: var(--amarelo); height: 6px; cursor: pointer; }
- .range-val { font-family: 'Bebas Neue',sans-serif; font-size: 22px; color: var(--amarelo); min-width: 36px; text-align: center; }
- .range-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
- .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--verde); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; z-index: 999; transition: transform 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
- .toast.show { transform: translateX(-50%) translateY(0); }
- .toast.error { background: var(--marrocos-red); }
- .loading { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
- .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--amarelo); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
- @keyframes spin { to { transform: rotate(360deg); } }
- @media (max-width: 500px) {
-   .team-name { font-size: 22px; } .team-flag { font-size: 44px; }
-   .vs-block { padding: 0 18px; } .tab-btn { padding: 12px 12px; font-size: 11px; }
-   .result-grid { grid-template-columns: 1fr; } .score-team { font-size: 12px; width: 60px; }
- }
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+  :root {
+    --verde: #009C3B; --amarelo: #FFDF00; --azul: #002776;
+    --bg: #030d1a; --card: #071428; --card2: #0a1e38;
+    --border: rgba(0,156,59,0.25); --text: #f0ede4; --muted: #6a8aaa;
+    --red: #C1272D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  header {
+    background: linear-gradient(180deg, #000 0%, var(--bg) 100%);
+    border-bottom: 3px solid var(--amarelo);
+    position: relative; overflow: hidden;
+  }
+  .header-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0,156,59,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .scoreboard {
+    display: flex; align-items: center; justify-content: center;
+    padding: 36px 20px 20px; position: relative; gap: 0;
+  }
+  .team-block { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 130px; }
+  .team-flag { font-size: 52px; line-height: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
+  .team-name { font-family: 'Bebas Neue',sans-serif; font-size: 26px; letter-spacing: 3px; color: #fff; }
+  .vs-block { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 28px; }
+  .vs-text { font-family: 'Bebas Neue',sans-serif; font-size: 18px; color: var(--muted); letter-spacing: 4px; }
+  .vs-divider { width: 2px; height: 56px; background: linear-gradient(to bottom, transparent, var(--amarelo), transparent); }
+  .match-info { text-align: center; padding: 0 20px 24px; }
+  .match-tag { display: inline-block; background: var(--amarelo); color: #000; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 14px; border-radius: 2px; margin-bottom: 6px; }
+  .match-subtitle { color: var(--muted); font-size: 13px; }
+
+  .tabs { display: flex; justify-content: center; background: #000; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tab-btn { background: none; border: none; color: var(--muted); font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; padding: 13px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; text-transform: uppercase; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--amarelo); border-bottom-color: var(--amarelo); }
+
+  .section { display: none; } .section.active { display: block; }
+  .container { max-width: 680px; margin: 0 auto; padding: 28px 16px; }
+
+  .form-header { text-align: center; margin-bottom: 28px; }
+  .form-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 30px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
+  .form-header p { color: var(--muted); font-size: 14px; }
+
+  .rules-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin-bottom: 24px; }
+  .rules-card h3 { font-family: 'Bebas Neue',sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--verde); margin-bottom: 14px; }
+  .rules-list { list-style: none; }
+  .rules-list li { font-size: 13px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; }
+  .rules-list li:last-child { border-bottom: none; }
+
+  .pts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .pts-item { background: var(--card2); border-radius: 6px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; }
+  .pts-label { font-size: 12px; color: var(--muted); }
+  .pts-val { font-family: 'Bebas Neue',sans-serif; font-size: 18px; color: var(--amarelo); }
+
+  .name-field { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin-bottom: 20px; }
+  .name-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block; }
+
+  .field-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin-bottom: 14px; transition: border-color 0.2s; }
+  .field-card:focus-within { border-color: rgba(0,156,59,0.6); }
+  .field-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .field-num { background: var(--verde); color: #fff; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .field-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .field-points { margin-left: auto; font-size: 11px; color: var(--amarelo); font-weight: 600; background: rgba(255,223,0,0.1); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+
+  .text-input, .select-input, .number-input {
+    width: 100%; background: var(--card2); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; color: var(--text); font-size: 15px; padding: 11px 14px;
+    outline: none; transition: border-color 0.15s; font-family: 'Inter',sans-serif;
+  }
+  .text-input:focus, .select-input:focus, .number-input:focus { border-color: var(--verde); }
+  .select-input option { background: #071428; }
+  .number-input { text-align: center; font-family: 'Bebas Neue',sans-serif; font-size: 24px; letter-spacing: 1px; }
+
+  .score-row { display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .score-team { font-size: 13px; color: var(--muted); font-weight: 600; text-align: center; }
+  .score-input { width: 70px; text-align: center; background: var(--card2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text); font-size: 28px; font-family: 'Bebas Neue',sans-serif; padding: 10px; outline: none; transition: border-color 0.15s; }
+  .score-input:focus { border-color: var(--verde); }
+  .score-x { font-size: 22px; color: var(--muted); font-family: 'Bebas Neue',sans-serif; }
+
+  .radio-group { display: flex; gap: 12px; }
+  .radio-option { position: relative; flex: 1; }
+  .radio-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .radio-option label { display: block; padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.15s; color: var(--muted); text-align: center; }
+  .radio-option input:checked + label { border-color: var(--verde); background: rgba(0,156,59,0.12); color: #00e050; }
+  .radio-option label:hover { border-color: rgba(0,156,59,0.4); color: var(--text); }
+
+  .submit-btn { width: 100%; background: var(--verde); color: #fff; border: none; border-radius: 10px; font-family: 'Bebas Neue',sans-serif; font-size: 22px; letter-spacing: 2px; padding: 16px; cursor: pointer; transition: all 0.2s; margin-top: 10px; box-shadow: 0 4px 20px rgba(0,156,59,0.3); }
+  .submit-btn:hover { background: #00b345; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(0,156,59,0.4); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .success-card { background: rgba(0,156,59,0.1); border: 1px solid rgba(0,156,59,0.4); border-radius: 10px; padding: 24px; text-align: center; margin-bottom: 20px; }
+  .success-card h3 { font-family: 'Bebas Neue',sans-serif; font-size: 26px; color: #00e050; letter-spacing: 2px; margin-bottom: 8px; }
+  .success-card p { color: var(--muted); font-size: 14px; }
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+  .summary-card h4 { font-family: 'Bebas Neue',sans-serif; font-size: 18px; color: var(--amarelo); letter-spacing: 1.5px; margin-bottom: 14px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: var(--muted); }
+  .summary-val { font-weight: 600; color: var(--text); }
+
+  .ranking-header { text-align: center; margin-bottom: 24px; }
+  .ranking-header h2 { font-family: 'Bebas Neue',sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 6px; }
+  .ranking-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .ranking-empty .icon { font-size: 48px; margin-bottom: 12px; }
+
+  .podium-row { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; }
+  .podium-row.gold { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.06); }
+  .podium-row.silver { border-color: rgba(180,180,180,0.4); }
+  .podium-row.bronze { border-color: rgba(180,100,40,0.4); }
+  .rank-name { flex: 1; font-weight: 600; font-size: 15px; }
+  .rank-score { font-family: 'Bebas Neue',sans-serif; font-size: 28px; color: var(--amarelo); }
+  .rank-pts { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .rank-breakdown { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .admin-lock { text-align: center; padding: 60px 20px; }
+  .admin-lock h3 { font-family: 'Bebas Neue',sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--amarelo); margin-bottom: 16px; }
+  .admin-lock p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .pin-input { width: 160px; text-align: center; background: var(--card); border: 2px solid var(--border); border-radius: 8px; color: var(--text); font-size: 28px; font-family: 'Bebas Neue',sans-serif; letter-spacing: 4px; padding: 12px; outline: none; margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto; }
+  .pin-input:focus { border-color: var(--amarelo); }
+  .unlock-btn { background: transparent; border: 1px solid var(--amarelo); color: var(--amarelo); border-radius: 6px; padding: 10px 28px; font-family: 'Bebas Neue',sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+  .unlock-btn:hover { background: var(--amarelo); color: #000; }
+  .admin-panel { display: none; }
+  .admin-section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 18px; }
+  .admin-section h3 { font-family: 'Bebas Neue',sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--amarelo); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .result-field { display: flex; flex-direction: column; gap: 6px; }
+  .result-field label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .calc-btn { width: 100%; background: var(--azul); color: #fff; border: none; border-radius: 8px; font-family: 'Bebas Neue',sans-serif; font-size: 18px; letter-spacing: 2px; padding: 14px; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+  .calc-btn:hover { background: #003baa; transform: translateY(-1px); }
+  .calc-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .entry-card { background: var(--card2); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px 16px; margin-bottom: 8px; font-size: 13px; }
+  .entry-card strong { color: var(--amarelo); display: block; margin-bottom: 6px; font-size: 14px; }
+  .entry-detail { color: var(--muted); line-height: 1.9; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--verde); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; z-index: 999; transition: transform 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--red); }
+
+  .loading { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--verde); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 500px) {
+    .team-name { font-size: 20px; } .team-flag { font-size: 42px; }
+    .vs-block { padding: 0 16px; } .tab-btn { padding: 12px 10px; font-size: 11px; }
+    .result-grid { grid-template-columns: 1fr; } .pts-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
+
 <header>
-<div class="header-glow"></div>
-<div class="scoreboard">
-<div class="team-block"><div class="team-flag">&#127463;&#127479;</div><div class="team-name">Brasil</div></div>
-<div class="vs-block"><div class="vs-text">VS</div><div class="vs-divider"></div></div>
-<div class="team-block"><div class="team-flag">&#127474;&#127462;</div><div class="team-name">Marrocos</div></div>
-</div>
-<div class="match-info">
-<div class="match-tag">&#127942; BOLAO DA FAMILIA</div>
-<div class="match-subtitle">&#127941; Familia Melo - a melhor familia que existe! &#127941;</div>
-</div>
+  <div class="header-glow"></div>
+  <div class="scoreboard">
+    <div class="team-block">
+      <div class="team-flag">&#127463;&#127479;</div>
+      <div class="team-name">Brasil</div>
+    </div>
+    <div class="vs-block">
+      <div class="vs-text">VS</div>
+      <div class="vs-divider"></div>
+    </div>
+    <div class="team-block">
+      <div class="team-flag">&#127469;&#127481;</div>
+      <div class="team-name">Haiti</div>
+    </div>
+  </div>
+  <div class="match-info">
+    <div class="match-tag">&#127942; BOLAO DA FAMILIA MELO</div>
+    <div class="match-subtitle">&#127941; A melhor familia que existe! &#127941;</div>
+  </div>
 </header>
+
 <div class="tabs">
-<button class="tab-btn active" onclick="showTab('apostar',this)">&#9917; Apostar</button>
-<button class="tab-btn" onclick="showTab('ranking',this)">&#127942; Ranking</button>
-<button class="tab-btn" onclick="showTab('admin',this)">&#9881; Admin</button>
+  <button class="tab-btn active" onclick="showTab('apostar',this)">&#9917; Apostar</button>
+  <button class="tab-btn" onclick="showTab('regras',this)">&#128203; Regras</button>
+  <button class="tab-btn" onclick="showTab('ranking',this)">&#127942; Ranking</button>
+  <button class="tab-btn" onclick="showTab('admin',this)">&#9881; Admin</button>
 </div>
+
+<!-- APOSTAR -->
 <div id="tab-apostar" class="section active">
-<div class="container">
-<div class="form-header"><h2>Faca sua aposta</h2><p>Responda as 6 perguntas e torca muito!</p></div>
-<div class="name-field">
-<label class="name-label">Seu nome completo</label>
-<input type="text" id="playerName" class="text-input" placeholder="Ex: Joao Silva">
+  <div class="container">
+    <div class="form-header">
+      <h2>Faca seu palpite!</h2>
+      <p>Preencha todos os campos e boa sorte!</p>
+    </div>
+
+    <div id="form-area">
+      <div class="name-field">
+        <label class="name-label">Seu nome completo</label>
+        <input type="text" id="playerName" class="text-input" placeholder="Ex: Joao Silva">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">1</div><div class="field-title">Placar da partida</div><div class="field-points">10 pts</div></div>
+        <div class="score-row">
+          <div class="score-team">&#127463;&#127479;<br>Brasil</div>
+          <input type="number" id="gols-brasil" class="score-input" min="0" max="30" value="0">
+          <div class="score-x">X</div>
+          <input type="number" id="gols-haiti" class="score-input" min="0" max="30" value="0">
+          <div class="score-team">&#127469;&#127481;<br>Haiti</div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">2</div><div class="field-title">Total de gols na partida</div><div class="field-points">5 pts</div></div>
+        <input type="number" id="total-gols" class="number-input" min="0" max="30" value="0">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">3</div><div class="field-title">Total de escanteios</div><div class="field-points">3 pts</div></div>
+        <input type="number" id="escanteios" class="number-input" min="0" max="40" value="0">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">4</div><div class="field-title">Total de cartoes amarelos</div><div class="field-points">3 pts</div></div>
+        <input type="number" id="amarelos" class="number-input" min="0" max="20" value="0">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">5</div><div class="field-title">Total de faltas</div><div class="field-points">3 pts</div></div>
+        <input type="number" id="faltas" class="number-input" min="0" max="60" value="0">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">6</div><div class="field-title">Total de finalizacoes no gol</div><div class="field-points">3 pts</div></div>
+        <input type="number" id="finalizacoes" class="number-input" min="0" max="50" value="0">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">7</div><div class="field-title">Minuto do primeiro gol (1-120)</div><div class="field-points">5 pts</div></div>
+        <input type="number" id="minuto-gol" class="number-input" min="1" max="120" value="45" placeholder="Ex: 23">
+      </div>
+
+      <div class="field-card">
+        <div class="field-label"><div class="field-num">8</div><div class="field-title">Vai ter penalti?</div><div class="field-points">2 pts</div></div>
+        <div class="radio-group">
+          <div class="radio-option"><input type="radio" name="penalti" id="p-sim" value="Sim"><label for="p-sim">&#9940; Sim</label></div>
+          <div class="radio-option"><input type="radio" name="penalti" id="p-nao" value="Nao"><label for="p-nao">&#10060; Nao</label></div>
+        </div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn" onclick="submitBet()">ENVIAR PALPITE &#9917;</button>
+    </div>
+
+    <div id="success-area" style="display:none">
+      <div class="success-card">
+        <div style="font-size:48px;margin-bottom:12px">&#127881;</div>
+        <h3>Palpite enviado!</h3>
+        <p>Boa sorte no bolao da Familia Melo!</p>
+      </div>
+      <div class="summary-card">
+        <h4>&#128203; Seu resumo</h4>
+        <div id="summary-content"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">1</div><div class="field-title">Quem vence a partida?</div><div class="field-points">3 pts</div></div>
-<div class="radio-group">
-<div class="radio-option"><input type="radio" name="vencedor" id="v-brasil" value="Brasil"><label for="v-brasil">&#127463;&#127479; Brasil</label></div>
-<div class="radio-option"><input type="radio" name="vencedor" id="v-empate" value="Empate"><label for="v-empate">&#129309; Empate</label></div>
-<div class="radio-option"><input type="radio" name="vencedor" id="v-marrocos" value="Marrocos"><label for="v-marrocos">&#127474;&#127462; Marrocos</label></div>
+
+<!-- REGRAS -->
+<div id="tab-regras" class="section">
+  <div class="container">
+    <div class="form-header"><h2>Regras do Bolao</h2></div>
+
+    <div class="rules-card">
+      <h3>&#128203; Participacao</h3>
+      <ul class="rules-list">
+        <li><span>&#9654;</span> Cada participante podera enviar apenas um palpite.</li>
+        <li><span>&#9654;</span> Todas as respostas sao de responsabilidade do participante.</li>
+        <li><span>&#9654;</span> Cada pergunta sera avaliada individualmente.</li>
+        <li><span>&#9654;</span> O ranking sera validado por Vanessa.</li>
+        <li><span>&#9654;</span> Em caso de empate, sera considerado o menor erro acumulado nas estatisticas.</li>
+        <li><span>&#9654;</span> Persistindo o empate, sera realizado sorteio entre os participantes empatados.</li>
+      </ul>
+    </div>
+
+    <div class="rules-card">
+      <h3>&#127942; Pontuacao</h3>
+      <div class="pts-grid">
+        <div class="pts-item"><span class="pts-label">Placar exato</span><span class="pts-val">10 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Total de gols</span><span class="pts-val">5 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Minuto 1o gol</span><span class="pts-val">5 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Escanteios</span><span class="pts-val">3 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Cartoes amarelos</span><span class="pts-val">3 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Faltas</span><span class="pts-val">3 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Finalizacoes no gol</span><span class="pts-val">3 pts</span></div>
+        <div class="pts-item"><span class="pts-label">Penalti (Sim/Nao)</span><span class="pts-val">2 pts</span></div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">2</div><div class="field-title">Qual o placar exato?</div><div class="field-points">5 pts</div></div>
-<div class="score-row">
-<div class="score-team">&#127463;&#127479; Brasil</div>
-<input type="number" id="gols-brasil" class="score-input" min="0" max="20" value="0">
-<div class="score-x">X</div>
-<input type="number" id="gols-marrocos" class="score-input" min="0" max="20" value="0">
-<div class="score-team">&#127474;&#127462; Marrocos</div>
-</div>
-</div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">3</div><div class="field-title">Quem marca o primeiro gol?</div><div class="field-points">3 pts</div></div>
-<input type="text" id="primeiro-gol" class="text-input" placeholder="Nome do jogador ou Nenhum (0x0)">
-</div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">4</div><div class="field-title">Craque da partida</div><div class="field-points">2 pts</div></div>
-<input type="text" id="craque" class="text-input" placeholder="Nome do jogador eleito craque">
-</div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">5</div><div class="field-title">Total de faltas na partida</div><div class="field-points">2 pts</div></div>
-<div class="range-row">
-<input type="range" id="faltas" class="range-input" min="10" max="50" value="25" oninput="document.getElementById('faltas-val').textContent=this.value">
-<div class="range-val" id="faltas-val">25</div>
-</div>
-<div class="range-hint">Media historica: ~25 faltas por jogo</div>
-</div>
-<div class="field-card">
-<div class="field-label"><div class="field-num">6</div><div class="field-title">Total de escanteios na partida</div><div class="field-points">1 pt</div></div>
-<div class="range-row">
-<input type="range" id="escanteios" class="range-input" min="0" max="25" value="10" oninput="document.getElementById('escanteios-val').textContent=this.value">
-<div class="range-val" id="escanteios-val">10</div>
-</div>
-<div class="range-hint">Media historica: ~10 escanteios por jogo</div>
-</div>
-<button class="submit-btn" id="submit-btn" onclick="submitBet()">ENVIAR APOSTA</button>
-</div>
-</div>
+
+<!-- RANKING -->
 <div id="tab-ranking" class="section">
-<div class="container">
-<div class="ranking-header"><h2>&#127942; Ranking</h2><p id="ranking-subtitle" style="color:var(--muted);font-size:14px;">Apuracao apos o jogo</p></div>
-<div id="ranking-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
-<div id="bets-count" style="text-align:center;margin-top:24px;color:var(--muted);font-size:13px;"></div>
+  <div class="container">
+    <div class="ranking-header">
+      <h2>&#127942; Ranking</h2>
+      <p id="ranking-subtitle" style="color:var(--muted);font-size:14px;">Apuracao apos o jogo</p>
+    </div>
+    <div id="ranking-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
+    <div id="bets-count" style="text-align:center;margin-top:20px;color:var(--muted);font-size:13px;"></div>
+  </div>
 </div>
-</div>
+
+<!-- ADMIN -->
 <div id="tab-admin" class="section">
-<div class="container">
-<div id="admin-lock-screen" class="admin-lock">
-<div style="font-size:48px;margin-bottom:16px;">&#128274;</div>
-<h3>Area do Admin</h3>
-<p>Digite o PIN para inserir os resultados e calcular a pontuacao.</p>
-<input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="....">
-<br>
-<button class="unlock-btn" onclick="checkPin()">ENTRAR</button>
+  <div class="container">
+    <div id="admin-lock-screen" class="admin-lock">
+      <div style="font-size:48px;margin-bottom:16px">&#128274;</div>
+      <h3>Area do Admin</h3>
+      <p>Somente Vanessa pode acessar esta area.</p>
+      <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="....">
+      <br>
+      <button class="unlock-btn" onclick="checkPin()">ENTRAR</button>
+    </div>
+
+    <div id="admin-panel" class="admin-panel">
+      <div class="admin-section">
+        <h3>Resultados do Jogo</h3>
+        <div class="result-grid">
+          <div class="result-field"><label>Placar Brasil</label><input type="number" id="r-brasil" class="text-input" min="0" max="30" value="0"></div>
+          <div class="result-field"><label>Placar Haiti</label><input type="number" id="r-haiti" class="text-input" min="0" max="30" value="0"></div>
+          <div class="result-field"><label>Total de Gols</label><input type="number" id="r-gols" class="text-input" min="0" placeholder="Ex: 5"></div>
+          <div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" placeholder="Ex: 12"></div>
+          <div class="result-field"><label>Cartoes Amarelos</label><input type="number" id="r-amarelos" class="text-input" min="0" placeholder="Ex: 3"></div>
+          <div class="result-field"><label>Total de Faltas</label><input type="number" id="r-faltas" class="text-input" min="0" placeholder="Ex: 28"></div>
+          <div class="result-field"><label>Finalizacoes no Gol</label><input type="number" id="r-finalizacoes" class="text-input" min="0" placeholder="Ex: 8"></div>
+          <div class="result-field"><label>Minuto do 1o Gol</label><input type="number" id="r-minuto" class="text-input" min="1" max="120" placeholder="Ex: 23"></div>
+          <div class="result-field"><label>Teve Penalti?</label>
+            <select id="r-penalti" class="select-input">
+              <option value="">-- selecione --</option>
+              <option value="Sim">Sim</option>
+              <option value="Nao">Nao</option>
+            </select>
+          </div>
+        </div>
+        <button class="calc-btn" id="calc-btn" onclick="calcularPontuacao()">CALCULAR PONTUACAO</button>
+      </div>
+
+      <div class="admin-section">
+        <h3>Palpites Recebidos (<span id="bets-total">...</span>)</h3>
+        <div id="entries-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
+      </div>
+
+      <div class="admin-section" style="border-color:rgba(193,39,45,0.3)">
+        <h3 style="color:var(--red)">Zona de Perigo</h3>
+        <button onclick="clearAll()" style="background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;padding:10px 20px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;cursor:pointer;">LIMPAR TODOS OS PALPITES</button>
+      </div>
+    </div>
+  </div>
 </div>
-<div id="admin-panel" class="admin-panel">
-<div class="admin-section">
-<h3>Resultados do Jogo</h3>
-<div class="result-grid">
-<div class="result-field"><label>Vencedor</label>
-<select id="r-vencedor" class="select-input">
-<option value="">-- selecione --</option>
-<option value="Brasil">Brasil</option>
-<option value="Empate">Empate</option>
-<option value="Marrocos">Marrocos</option>
-</select>
-</div>
-<div class="result-field"><label>Placar Brasil x Marrocos</label>
-<div class="score-row" style="gap:8px">
-<input type="number" id="r-gols-brasil" class="score-input" min="0" max="20" value="0" style="width:52px">
-<span class="score-x">x</span>
-<input type="number" id="r-gols-marrocos" class="score-input" min="0" max="20" value="0" style="width:52px">
-</div>
-</div>
-<div class="result-field"><label>Primeiro Gol</label><input type="text" id="r-primeiro-gol" class="text-input" placeholder="Nome do jogador"></div>
-<div class="result-field"><label>Craque da Partida</label><input type="text" id="r-craque" class="text-input" placeholder="Nome do jogador"></div>
-<div class="result-field"><label>Total de Faltas</label><input type="number" id="r-faltas" class="text-input" min="0" max="80" placeholder="Ex: 28"></div>
-<div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" max="30" placeholder="Ex: 10"></div>
-</div>
-<button class="calc-btn" id="calc-btn" onclick="calcularPontuacao()">CALCULAR PONTUACAO</button>
-</div>
-<div class="admin-section">
-<h3>Apostas Recebidas (<span id="bets-total">...</span>)</h3>
-<div id="entries-list"><div class="loading"><span class="spinner"></span>Carregando...</div></div>
-</div>
-<div class="admin-section" style="border-color:rgba(193,39,45,0.3)">
-<h3 style="color:var(--marrocos-red)">Zona de Perigo</h3>
-<button onclick="clearAll()" style="background:transparent;border:1px solid var(--marrocos-red);color:var(--marrocos-red);border-radius:6px;padding:10px 20px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;cursor:pointer;">LIMPAR TODAS AS APOSTAS</button>
-</div>
-</div>
-</div>
-</div>
+
 <div class="toast" id="toast"></div>
+
 <script>
 var ADMIN_PIN = "4221";
 var SHEET_URL = "https://script.google.com/macros/s/AKfycby4VCDBEKpwZyJQ49Dls6ElNdq7J971PZkqMiEp3hwPK5XiO1roDA1VazkolvCvLVYakg/exec";
+
 async function getAllBets() {
- try {
-   var res = await fetch(SHEET_URL);
-   var data = await res.json();
-   var rows = data.rows || [];
-   if (rows.length <= 1) return [];
-   return rows.slice(1).map(function(r) {
-     return {
-       name: r[0], vencedor: r[1],
-       gols_brasil: parseInt(r[2]) || 0,
-       gols_marrocos: parseInt(r[3]) || 0,
-       primeiro_gol: r[4], craque: r[5],
-       faltas: r[6], escanteios: r[7],
-       timestamp: r[8],
-       pontos: (r[9] !== undefined && r[9] !== '') ? parseInt(r[9]) : null,
-       breakdown: r[10] ? String(r[10]).split('|') : null
-     };
-   });
- } catch(e) { return []; }
+  try {
+    var res = await fetch(SHEET_URL);
+    var data = await res.json();
+    var rows = data.rows || [];
+    if (rows.length <= 1) return [];
+    return rows.slice(1).map(function(r) {
+      return {
+        name: String(r[0]||''),
+        gols_brasil: parseInt(r[1])||0,
+        gols_haiti: parseInt(r[2])||0,
+        total_gols: parseInt(r[3])||0,
+        escanteios: parseInt(r[4])||0,
+        amarelos: parseInt(r[5])||0,
+        faltas: parseInt(r[6])||0,
+        finalizacoes: parseInt(r[7])||0,
+        minuto_gol: parseInt(r[8])||0,
+        penalti: String(r[9]||''),
+        timestamp: String(r[10]||''),
+        pontos: (r[11]!==undefined && r[11]!=='') ? parseInt(r[11]) : null,
+        breakdown: r[12] ? String(r[12]).split('|') : null
+      };
+    });
+  } catch(e) { return []; }
 }
+
 function showTab(name, btn) {
- document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
- document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
- document.getElementById('tab-' + name).classList.add('active');
- btn.classList.add('active');
- if (name === 'ranking') renderRanking();
- if (name === 'admin' && document.getElementById('admin-panel').style.display === 'block') renderAdmin();
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (name==='ranking') renderRanking();
+  if (name==='admin' && document.getElementById('admin-panel').style.display==='block') renderAdmin();
 }
+
 function showToast(msg, isError) {
- var t = document.getElementById('toast');
- t.textContent = msg;
- t.className = 'toast' + (isError ? ' error' : '');
- void t.offsetWidth;
- t.classList.add('show');
- setTimeout(function() { t.classList.remove('show'); }, 3400);
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(isError?' error':'');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3400);
 }
+
 async function submitBet() {
- var name = document.getElementById('playerName').value.trim();
- if (!name) { showToast('Digite seu nome!', true); return; }
- var vencedor = document.querySelector('input[name="vencedor"]:checked');
- if (!vencedor) { showToast('Escolha o vencedor!', true); return; }
- var primeiroGol = document.getElementById('primeiro-gol').value.trim();
- if (!primeiroGol) { showToast('Preencha o primeiro gol!', true); return; }
- var craque = document.getElementById('craque').value.trim();
- if (!craque) { showToast('Preencha o craque!', true); return; }
- var btn = document.getElementById('submit-btn');
- btn.disabled = true; btn.textContent = 'Enviando...';
- var bets = await getAllBets();
- if (bets.find(function(b) { return b.name.toLowerCase().trim() === name.toLowerCase().trim(); })) {
-   showToast('Esse nome ja apostou!', true);
-   btn.disabled = false; btn.textContent = 'ENVIAR APOSTA';
-   return;
- }
- var bet = {
-   action: 'bet', name: name, vencedor: vencedor.value,
-   gols_brasil: parseInt(document.getElementById('gols-brasil').value) || 0,
-   gols_marrocos: parseInt(document.getElementById('gols-marrocos').value) || 0,
-   primeiro_gol: primeiroGol, craque: craque,
-   faltas: parseInt(document.getElementById('faltas').value),
-   escanteios: parseInt(document.getElementById('escanteios').value)
- };
- try {
-   await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(bet) });
-   showToast('Aposta enviada, ' + name + '! Boa sorte!');
-   document.getElementById('playerName').value = '';
-   document.querySelectorAll('input[type=radio]').forEach(function(r) { r.checked = false; });
-   document.getElementById('gols-brasil').value = 0;
-   document.getElementById('gols-marrocos').value = 0;
-   document.getElementById('primeiro-gol').value = '';
-   document.getElementById('craque').value = '';
-   document.getElementById('faltas').value = 25;
-   document.getElementById('faltas-val').textContent = '25';
-   document.getElementById('escanteios').value = 10;
-   document.getElementById('escanteios-val').textContent = '10';
- } catch(e) {
-   showToast('Erro ao enviar. Tente novamente!', true);
- }
- btn.disabled = false; btn.textContent = 'ENVIAR APOSTA';
+  var name = document.getElementById('playerName').value.trim();
+  if (!name) { showToast('Digite seu nome!', true); return; }
+
+  var penalti = document.querySelector('input[name="penalti"]:checked');
+  if (!penalti) { showToast('Responda sobre o penalti!', true); return; }
+
+  var minuto = parseInt(document.getElementById('minuto-gol').value);
+  if (!minuto || minuto < 1 || minuto > 120) { showToast('Minuto do gol deve ser entre 1 e 120!', true); return; }
+
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  var bets = await getAllBets();
+  if (bets.find(function(b){ return b.name.toLowerCase().trim()===name.toLowerCase().trim(); })) {
+    showToast('Esse nome ja apostou!', true);
+    btn.disabled = false; btn.textContent = 'ENVIAR PALPITE';
+    return;
+  }
+
+  var bet = {
+    action: 'bet',
+    name: name,
+    gols_brasil: parseInt(document.getElementById('gols-brasil').value)||0,
+    gols_haiti: parseInt(document.getElementById('gols-haiti').value)||0,
+    total_gols: parseInt(document.getElementById('total-gols').value)||0,
+    escanteios: parseInt(document.getElementById('escanteios').value)||0,
+    amarelos: parseInt(document.getElementById('amarelos').value)||0,
+    faltas: parseInt(document.getElementById('faltas').value)||0,
+    finalizacoes: parseInt(document.getElementById('finalizacoes').value)||0,
+    minuto_gol: minuto,
+    penalti: penalti.value
+  };
+
+  try {
+    await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(bet) });
+
+    // Mostrar sucesso
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('success-area').style.display = 'block';
+    document.getElementById('summary-content').innerHTML =
+      '<div class="summary-row"><span class="summary-label">Nome</span><span class="summary-val">'+bet.name+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Placar</span><span class="summary-val">Brasil '+bet.gols_brasil+' x '+bet.gols_haiti+' Haiti</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Total de gols</span><span class="summary-val">'+bet.total_gols+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Escanteios</span><span class="summary-val">'+bet.escanteios+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Cartoes amarelos</span><span class="summary-val">'+bet.amarelos+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Faltas</span><span class="summary-val">'+bet.faltas+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Finalizacoes no gol</span><span class="summary-val">'+bet.finalizacoes+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Minuto do 1o gol</span><span class="summary-val">'+bet.minuto_gol+'</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Penalti?</span><span class="summary-val">'+bet.penalti+'</span></div>';
+
+    showToast('Palpite enviado com sucesso!');
+  } catch(e) {
+    showToast('Erro ao enviar. Tente novamente!', true);
+    btn.disabled = false; btn.textContent = 'ENVIAR PALPITE';
+  }
 }
-function normalize(s) { return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+
 function calcPoints(bet, result) {
- var pts = 0; var breakdown = [];
- if (bet.vencedor === result.vencedor) { pts += 3; breakdown.push('Vencedor +3'); }
- if (bet.gols_brasil === result.gols_brasil && bet.gols_marrocos === result.gols_marrocos) { pts += 5; breakdown.push('Placar exato +5'); }
- if (normalize(bet.primeiro_gol) === normalize(result.primeiro_gol)) { pts += 3; breakdown.push('1o gol +3'); }
- if (normalize(bet.craque) === normalize(result.craque)) { pts += 2; breakdown.push('Craque +2'); }
- if (parseInt(bet.faltas) === parseInt(result.faltas)) { pts += 2; breakdown.push('Faltas +2'); }
- if (parseInt(bet.escanteios) === parseInt(result.escanteios)) { pts += 1; breakdown.push('Escanteios +1'); }
- return { pts: pts, breakdown: breakdown };
+  var pts = 0; var breakdown = [];
+  if (bet.gols_brasil===result.gols_brasil && bet.gols_haiti===result.gols_haiti) { pts+=10; breakdown.push('Placar +10'); }
+  if (bet.total_gols===result.total_gols) { pts+=5; breakdown.push('Gols +5'); }
+  if (bet.minuto_gol===result.minuto_gol) { pts+=5; breakdown.push('Minuto +5'); }
+  if (bet.escanteios===result.escanteios) { pts+=3; breakdown.push('Escanteios +3'); }
+  if (bet.amarelos===result.amarelos) { pts+=3; breakdown.push('Amarelos +3'); }
+  if (bet.faltas===result.faltas) { pts+=3; breakdown.push('Faltas +3'); }
+  if (bet.finalizacoes===result.finalizacoes) { pts+=3; breakdown.push('Finalizacoes +3'); }
+  if (bet.penalti===result.penalti) { pts+=2; breakdown.push('Penalti +2'); }
+  return { pts: pts, breakdown: breakdown };
 }
+
 function checkPin() {
- if (document.getElementById('pin-input').value === ADMIN_PIN) {
-   document.getElementById('admin-lock-screen').style.display = 'none';
-   document.getElementById('admin-panel').style.display = 'block';
-   renderAdmin();
- } else {
-   showToast('PIN incorreto!', true);
-   document.getElementById('pin-input').value = '';
- }
+  if (document.getElementById('pin-input').value===ADMIN_PIN) {
+    document.getElementById('admin-lock-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdmin();
+  } else {
+    showToast('PIN incorreto!', true);
+    document.getElementById('pin-input').value = '';
+  }
 }
-document.getElementById('pin-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPin(); });
+
+document.getElementById('pin-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPin(); });
+
 async function calcularPontuacao() {
- var result = {
-   vencedor: document.getElementById('r-vencedor').value,
-   gols_brasil: parseInt(document.getElementById('r-gols-brasil').value) || 0,
-   gols_marrocos: parseInt(document.getElementById('r-gols-marrocos').value) || 0,
-   primeiro_gol: document.getElementById('r-primeiro-gol').value.trim(),
-   craque: document.getElementById('r-craque').value.trim(),
-   faltas: document.getElementById('r-faltas').value,
-   escanteios: document.getElementById('r-escanteios').value
- };
- if (!result.vencedor) { showToast('Selecione o vencedor!', true); return; }
- if (!result.faltas || !result.escanteios) { showToast('Preencha faltas e escanteios!', true); return; }
- var btn = document.getElementById('calc-btn');
- btn.disabled = true; btn.textContent = 'Calculando...';
- var bets = await getAllBets();
- for (var i = 0; i < bets.length; i++) {
-   var res = calcPoints(bets[i], result);
-   await fetch(SHEET_URL, {
-     method: 'POST', mode: 'no-cors',
-     body: JSON.stringify({ action: 'score', name: bets[i].name, pontos: res.pts, breakdown: res.breakdown.join('|'), result: JSON.stringify(result) })
-   });
- }
- showToast('Pontuacao calculada! Veja o ranking.');
- btn.disabled = false; btn.textContent = 'CALCULAR PONTUACAO';
- renderAdmin();
- renderRanking();
+  var result = {
+    gols_brasil: parseInt(document.getElementById('r-brasil').value)||0,
+    gols_haiti: parseInt(document.getElementById('r-haiti').value)||0,
+    total_gols: parseInt(document.getElementById('r-gols').value)||0,
+    escanteios: parseInt(document.getElementById('r-escanteios').value)||0,
+    amarelos: parseInt(document.getElementById('r-amarelos').value)||0,
+    faltas: parseInt(document.getElementById('r-faltas').value)||0,
+    finalizacoes: parseInt(document.getElementById('r-finalizacoes').value)||0,
+    minuto_gol: parseInt(document.getElementById('r-minuto').value)||0,
+    penalti: document.getElementById('r-penalti').value
+  };
+  if (!result.penalti) { showToast('Selecione se teve penalti!', true); return; }
+
+  var btn = document.getElementById('calc-btn');
+  btn.disabled = true; btn.textContent = 'Calculando...';
+
+  var bets = await getAllBets();
+  for (var i=0; i<bets.length; i++) {
+    var res = calcPoints(bets[i], result);
+    await fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ action: 'score', name: bets[i].name, pontos: res.pts, breakdown: res.breakdown.join('|'), result: JSON.stringify(result) })
+    });
+  }
+
+  showToast('Pontuacao calculada!');
+  btn.disabled = false; btn.textContent = 'CALCULAR PONTUACAO';
+  renderAdmin();
+  renderRanking();
 }
+
 async function renderAdmin() {
- var bets = await getAllBets();
- document.getElementById('bets-total').textContent = bets.length;
- var list = document.getElementById('entries-list');
- if (bets.length === 0) { list.innerHTML = '<p style="color:var(--muted);font-size:14px;">Nenhuma aposta ainda.</p>'; return; }
- list.innerHTML = bets.map(function(b) {
-   return '<div class="entry-card"><strong>' + b.name + '</strong><div class="entry-detail">Vencedor: <b>' + b.vencedor + '</b> - Placar: <b>Brasil ' + b.gols_brasil + 'x' + b.gols_marrocos + ' Marrocos</b><br>1o Gol: <b>' + b.primeiro_gol + '</b> - Craque: <b>' + b.craque + '</b><br>Faltas: <b>' + b.faltas + '</b> - Escanteios: <b>' + b.escanteios + '</b><br><span style="color:var(--muted);font-size:12px">&#128336; ' + b.timestamp + '</span>' + (b.pontos !== null ? '<br><span style="color:var(--amarelo);font-weight:700">Pontos: ' + b.pontos + '</span>' : '') + '</div></div>';
- }).join('');
+  var bets = await getAllBets();
+  document.getElementById('bets-total').textContent = bets.length;
+  var list = document.getElementById('entries-list');
+  if (bets.length===0) { list.innerHTML='<p style="color:var(--muted);font-size:14px;">Nenhum palpite ainda.</p>'; return; }
+  list.innerHTML = bets.map(function(b){
+    return '<div class="entry-card"><strong>'+b.name+'</strong><div class="entry-detail">Placar: <b>Brasil '+b.gols_brasil+' x '+b.gols_haiti+' Haiti</b><br>Gols: <b>'+b.total_gols+'</b> - Escanteios: <b>'+b.escanteios+'</b> - Amarelos: <b>'+b.amarelos+'</b><br>Faltas: <b>'+b.faltas+'</b> - Finalizacoes: <b>'+b.finalizacoes+'</b><br>Minuto 1o gol: <b>'+b.minuto_gol+'</b> - Penalti: <b>'+b.penalti+'</b><br><span style="color:var(--muted);font-size:12px">&#128336; '+b.timestamp+'</span>'+(b.pontos!==null?'<br><span style="color:var(--amarelo);font-weight:700">Pontos: '+b.pontos+'</span>':'')+'</div></div>';
+  }).join('');
 }
+
 async function renderRanking() {
- var list = document.getElementById('ranking-list');
- var countEl = document.getElementById('bets-count');
- list.innerHTML = '<div class="loading"><span class="spinner"></span>Carregando...</div>';
- var bets = await getAllBets();
- countEl.textContent = bets.length + ' aposta' + (bets.length !== 1 ? 's' : '') + ' registrada' + (bets.length !== 1 ? 's' : '');
- if (bets.length === 0) {
-   list.innerHTML = '<div class="ranking-empty"><div class="icon">&#9203;</div><p>Nenhuma aposta registrada ainda.</p></div>';
-   return;
- }
- var scored = bets.filter(function(b) { return b.pontos !== null; });
- var sorted = bets.slice().sort(function(a, b) { return (b.pontos || 0) - (a.pontos || 0); });
- list.innerHTML = sorted.map(function(b, i) {
-   var cls = (i === 0 && scored.length > 0) ? 'gold' : (i === 1 && scored.length > 0) ? 'silver' : (i === 2 && scored.length > 0) ? 'bronze' : '';
-   var medal = scored.length > 0 ? (i === 0 ? '&#127947;' : i === 1 ? '&#129352;' : i === 2 ? '&#129353;' : '<span style="font-family:\'Bebas Neue\';font-size:20px;color:var(--muted)">' + (i+1) + '</span>') : '<span style="font-family:\'Bebas Neue\';font-size:20px;color:var(--muted)">' + (i+1) + '</span>';
-   var pontos = b.pontos !== null ? b.pontos : 0;
-   return '<div class="podium-row ' + cls + '"><div style="width:30px;text-align:center;font-size:20px">' + medal + '</div><div style="flex:1"><div class="rank-name">' + b.name + '</div>' + (b.breakdown ? '<div class="rank-breakdown">' + b.breakdown.join(' - ') + '</div>' : '') + '</div><div style="text-align:right"><div class="rank-score">' + pontos + '</div><div class="rank-pts">pontos</div></div></div>';
- }).join('');
+  var list = document.getElementById('ranking-list');
+  var countEl = document.getElementById('bets-count');
+  list.innerHTML = '<div class="loading"><span class="spinner"></span>Carregando...</div>';
+  var bets = await getAllBets();
+  countEl.textContent = bets.length+' palpite'+(bets.length!==1?'s':'')+' registrado'+(bets.length!==1?'s':'');
+
+  if (bets.length===0) {
+    list.innerHTML='<div class="ranking-empty"><div class="icon">&#9203;</div><p>Nenhum palpite registrado ainda.</p></div>';
+    return;
+  }
+
+  var scored = bets.filter(function(b){ return b.pontos!==null; });
+  var sorted = bets.slice().sort(function(a,b){ return (b.pontos||0)-(a.pontos||0); });
+
+  list.innerHTML = sorted.map(function(b,i){
+    var cls = (i===0&&scored.length>0)?'gold':(i===1&&scored.length>0)?'silver':(i===2&&scored.length>0)?'bronze':'';
+    var medal = scored.length>0?(i===0?'&#127947;':i===1?'&#129352;':i===2?'&#129353;':'<span style="font-family:\'Bebas Neue\';font-size:20px;color:var(--muted)">'+(i+1)+'</span>'):'<span style="font-family:\'Bebas Neue\';font-size:20px;color:var(--muted)">'+(i+1)+'</span>';
+    return '<div class="podium-row '+cls+'"><div style="width:30px;text-align:center;font-size:20px">'+medal+'</div><div style="flex:1"><div class="rank-name">'+b.name+'</div>'+(b.breakdown?'<div class="rank-breakdown">'+b.breakdown.join(' - ')+'</div>':'')+'</div><div style="text-align:right"><div class="rank-score">'+(b.pontos!==null?b.pontos:0)+'</div><div class="rank-pts">pontos</div></div></div>';
+  }).join('');
 }
+
 async function clearAll() {
- if (!confirm('Tem certeza? Apaga TODAS as apostas e resultados.')) return;
- await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'clear' }) });
- showToast('Dados apagados.');
- renderAdmin();
- renderRanking();
+  if (!confirm('Tem certeza? Apaga TODOS os palpites.')) return;
+  await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'clear' }) });
+  showToast('Dados apagados.');
+  renderAdmin();
+  renderRanking();
 }
+
 renderRanking();
 </script>
 </body>
