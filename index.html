@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolao Familia Melo - Brasil x Japao</title>
+<title>Bolao Familia Melo - Brasil x Noruega</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
   :root {
@@ -171,8 +171,8 @@
       <div class="vs-divider"></div>
     </div>
     <div class="team-block">
-      <div class="team-flag"><img src="https://flagcdn.com/w80/jp.png" style="width:72px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.6)"></div>
-      <div class="team-name">Japao</div>
+      <div class="team-flag"><img src="https://flagcdn.com/w80/no.png" style="width:72px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.6)"></div>
+      <div class="team-name">Noruega</div>
     </div>
   </div>
   <div class="match-info">
@@ -209,7 +209,7 @@
           <input type="number" id="gols-brasil" class="score-input" min="0" max="30" value="0">
           <div class="score-x">X</div>
           <input type="number" id="gols-haiti" class="score-input" min="0" max="30" value="0">
-          <div class="score-team"><img src="https://flagcdn.com/w40/jp.png" style="width:36px;border-radius:3px"><br>Japao</div>
+          <div class="score-team"><img src="https://flagcdn.com/w40/no.png" style="width:36px;border-radius:3px"><br>Noruega</div>
         </div>
       </div>
 
@@ -330,7 +330,7 @@
         <h3>Resultados do Jogo</h3>
         <div class="result-grid">
           <div class="result-field"><label>Placar Brasil</label><input type="number" id="r-brasil" class="text-input" min="0" max="30" value="0"></div>
-          <div class="result-field"><label>Placar Japao</label><input type="number" id="r-haiti" class="text-input" min="0" max="30" value="0"></div>
+          <div class="result-field"><label>Placar Noruega</label><input type="number" id="r-haiti" class="text-input" min="0" max="30" value="0"></div>
           <div class="result-field"><label>Total de Gols</label><input type="number" id="r-gols" class="text-input" min="0" placeholder="Ex: 5"></div>
           <div class="result-field"><label>Total de Escanteios</label><input type="number" id="r-escanteios" class="text-input" min="0" placeholder="Ex: 12"></div>
           <div class="result-field"><label>Cartoes Amarelos</label><input type="number" id="r-amarelos" class="text-input" min="0" placeholder="Ex: 3"></div>
@@ -453,7 +453,7 @@ async function submitBet() {
     document.getElementById('success-area').style.display = 'block';
     document.getElementById('summary-content').innerHTML =
       '<div class="summary-row"><span class="summary-label">Nome</span><span class="summary-val">'+bet.name+'</span></div>'+
-      '<div class="summary-row"><span class="summary-label">Placar</span><span class="summary-val">Brasil '+bet.gols_brasil+' x '+bet.gols_haiti+' Japao</span></div>'+
+      '<div class="summary-row"><span class="summary-label">Placar</span><span class="summary-val">Brasil '+bet.gols_brasil+' x '+bet.gols_haiti+' Noruega</span></div>'+
       '<div class="summary-row"><span class="summary-label">Total de gols</span><span class="summary-val">'+bet.total_gols+'</span></div>'+
       '<div class="summary-row"><span class="summary-label">Escanteios</span><span class="summary-val">'+bet.escanteios+'</span></div>'+
       '<div class="summary-row"><span class="summary-label">Cartoes amarelos</span><span class="summary-val">'+bet.amarelos+'</span></div>'+
@@ -533,7 +533,7 @@ async function renderAdmin() {
   var list = document.getElementById('entries-list');
   if (bets.length===0) { list.innerHTML='<p style="color:var(--muted);font-size:14px;">Nenhum palpite ainda.</p>'; return; }
   list.innerHTML = bets.map(function(b){
-    return '<div class="entry-card"><strong>'+b.name+'</strong><div class="entry-detail">Placar: <b>Brasil '+b.gols_brasil+' x '+b.gols_haiti+' Japao</b><br>Gols: <b>'+b.total_gols+'</b> - Escanteios: <b>'+b.escanteios+'</b> - Amarelos: <b>'+b.amarelos+'</b><br>Faltas: <b>'+b.faltas+'</b> - Finalizacoes: <b>'+b.finalizacoes+'</b><br>Minuto 1o gol: <b>'+b.minuto_gol+'</b> - Penalti: <b>'+b.penalti+'</b><br><span style="color:var(--muted);font-size:12px">&#128336; '+b.timestamp+'</span>'+(b.pontos!==null?'<br><span style="color:var(--amarelo);font-weight:700">Pontos: '+b.pontos+'</span>':'')+'</div></div>';
+    return '<div class="entry-card"><strong>'+b.name+'</strong><div class="entry-detail">Placar: <b>Brasil '+b.gols_brasil+' x '+b.gols_haiti+' Noruega</b><br>Gols: <b>'+b.total_gols+'</b> - Escanteios: <b>'+b.escanteios+'</b> - Amarelos: <b>'+b.amarelos+'</b><br>Faltas: <b>'+b.faltas+'</b> - Finalizacoes: <b>'+b.finalizacoes+'</b><br>Minuto 1o gol: <b>'+b.minuto_gol+'</b> - Penalti: <b>'+b.penalti+'</b><br><span style="color:var(--muted);font-size:12px">&#128336; '+b.timestamp+'</span>'+(b.pontos!==null?'<br><span style="color:var(--amarelo);font-weight:700">Pontos: '+b.pontos+'</span>':'')+'</div></div>';
   }).join('');
 }
 
